@@ -1,0 +1,60 @@
+<div class="container">
+  <div>
+    <div class="selection">
+      <a [class]="isSales ? 'active-text' : ''" (click)="changeType()">Sales</a>
+      <div class="spacer">/</div>
+      <a [class]="!isSales ? 'active-text' : ''" (click)="changeType()"
+        >Purchase</a
+      >
+    </div>
+    <div class="ion-padding-top">Current Active Params</div>
+    <div class="row-wrapper">
+      <div class="attribute"><b>Start Date</b></div>
+      <input type="date" [(ngModel)]="startDate" />
+    </div>
+    <div class="row-wrapper">
+      <div class="attribute"><b>End Date</b></div>
+      <input type="date" [(ngModel)]="endDate" />
+    </div>
+    <div
+      class="row-wrapper"
+      *ngIf="commonService?.customer?.customerName && isSales"
+    >
+      <div class="attribute"><b>Customer</b></div>
+      <div class="customer" (click)="removeCustomer()">
+        {{ commonService?.customer?.customerName }} <span>ⓧ</span>
+      </div>
+    </div>
+    <div class="row-wrapper">
+      <div class="attribute"><b>Sort By</b></div>
+    </div>
+    <ion-radio-group [(ngModel)]="sortBy">
+      <span>
+        <ion-radio value="createdDate"></ion-radio>
+        <ion-label>Date</ion-label>
+      </span>
+      <span>
+        <ion-radio value="totalPrice"></ion-radio>
+        <ion-label>Price</ion-label>
+      </span>
+
+      <span>
+        <ion-radio value="isCredit"></ion-radio>
+        <ion-label>Invoice Status</ion-label></span
+      >
+    </ion-radio-group>
+  </div>
+  <ion-button (click)="generateReport()" class="green"
+    >Generate report</ion-button
+  >
+</div>
+<div class="table-wrapper">
+  <ngpq-table
+    [data]="data"
+    [settings]="settings"
+    *ngIf="showTable"
+    [pageSizeOptions]="[25]"
+    (cellClick)="editInvoice($event)"
+  >
+  </ngpq-table>
+</div>

@@ -1,0 +1,58 @@
+.container {
+  padding: 16px 0px;
+  .header-title {
+    padding: 0px 32px;
+    border-bottom: 2px solid #a7d7c5;
+    margin-bottom: 8px;
+    .title {
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+  }
+  .content {
+    padding: 0px 32px;
+  }
+}
+
+.attribute {
+  width: 115px;
+  min-width: 115px;
+}
+
+.spacer {
+  margin-right: 10px;
+}
+
+.green {
+  margin-left: 0px;
+  margin-top: 16px;
+}
+
+.button-wrapper {
+  float: none;
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  margin-bottom: 0px;
+  ion-button {
+    margin: 0px;
+  }
+  .green {
+    margin-top: 0px;
+    margin-left: 8px;
+  }
+}
+
+.logout {
+  margin-top: 16px;
+}
+
+.toggle-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.link {
+  color: #54d98c !important;
+  text-decoration: underline;
+}

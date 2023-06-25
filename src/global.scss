@@ -1,0 +1,256 @@
+/*
+ * App Global CSS
+ * ----------------------------------------------------------------------------
+ * Put style rules here that you want to apply globally. These styles are for
+ * the entire app and not just one component. Additionally, this file can be
+ * used as an entry point to import other CSS/Sass files to be included in the
+ * output CSS.
+ * For more information on global stylesheets, visit the documentation:
+ * https://ionicframework.com/docs/layout/global-stylesheets
+ */
+
+/* Core CSS required for Ionic components to work properly */
+@import "@ionic/angular/css/core.css";
+
+/* Basic CSS for apps built with Ionic */
+@import "@ionic/angular/css/normalize.css";
+@import "@ionic/angular/css/structure.css";
+@import "@ionic/angular/css/typography.css";
+@import "@ionic/angular/css/display.css";
+
+/* Optional CSS utils that can be commented out */
+@import "@ionic/angular/css/padding.css";
+@import "@ionic/angular/css/float-elements.css";
+@import "@ionic/angular/css/text-alignment.css";
+@import "@ionic/angular/css/text-transformation.css";
+@import "@ionic/angular/css/flex-utils.css";
+
+.custom-searchbar {
+  --background: #f2f2f2;
+  --color: #333333;
+  --placeholder-color: #999999;
+  --border-color: #cccccc;
+  --border-width: 2px;
+  --border-radius: 10px;
+  --padding-start: 10px;
+  --padding-end: 10px;
+  --padding-top: 8px;
+  --padding-bottom: 8px;
+  margin-top: 28px;
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+icon-popover {
+  float: right;
+}
+
+.triangle {
+  width: 0;
+  height: 0;
+  border-left: 9px solid transparent;
+  border-right: 9px solid transparent;
+  border-bottom: 16px solid #a7d7c5;
+  float: right;
+  margin-top: -12px;
+}
+.popover-option-wrapper {
+  padding: 10px;
+  background-color: #a7d7c5;
+  border-radius: 8px;
+  margin-top: 1px;
+  div {
+    margin-top: 8px;
+    color: azure;
+  }
+  div:first-child {
+    margin-top: 0px;
+  }
+}
+
+ion-modal {
+  padding-top: 100px;
+  border-radius: 12px;
+  .modal-content {
+    font-size: 14px;
+  }
+}
+
+ion-modal.no-padding-top {
+  padding-top: 0px;
+}
+
+ion-modal.no-inner-padding {
+  .modal-content {
+    padding: 0px;
+    background-color: #f4f9f4;
+  }
+}
+
+ion-modal.auto-height {
+  --height: auto;
+  align-items: flex-start;
+  .ion-page {
+    position: relative;
+    display: block;
+    contain: content;
+    .inner-content {
+      max-height: 85vh;
+      overflow-y: auto;
+    }
+  }
+}
+
+ion-button.green {
+  margin-top: 37px;
+  margin-left: 10px;
+  --background: transparent;
+  border: 3px #a7d7c5 solid;
+  border-radius: 10px;
+  font-weight: 600;
+  --background-activated: transparent;
+  --color: #5c8d89;
+  a {
+    color: #5c8d89;
+  }
+}
+
+.error-message {
+  margin-bottom: 10px;
+  color: darkred;
+}
+
+.search-button {
+  display: flex;
+  input.searchbar-input {
+    min-width: 180px;
+  }
+  .buttons-wrapper {
+    display: flex;
+    @media (max-width: 567px) {
+      display: flex;
+      justify-content: space-between;
+      .green {
+        width: 48%;
+        margin-top: 12px;
+        margin-left: 0px;
+      }
+    }
+  }
+  @media (max-width: 567px) {
+    display: block;
+    .green {
+      width: 100%;
+      margin-top: 12px;
+      margin-left: 0px;
+    }
+    .two {
+      width: 50%;
+    }
+  }
+}
+
+.active-container {
+  background-color: #54d98c !important;
+  background-image: linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.6) 0%,
+    rgba(255, 255, 255, 0) 100%
+  );
+}
+
+.active-text {
+  color: #54d98c !important;
+  text-decoration: underline;
+}
+
+ion-content {
+  --ion-background-color: #f4f4f4;
+}
+
+.container {
+  background-color: #ffffff;
+  border-radius: 10px;
+  margin: 16px 12px;
+  color: black;
+  padding: 16px 32px;
+  .selection {
+    font-size: 18px;
+    width: 145px;
+    display: flex;
+    justify-content: space-between;
+    float: right;
+    a {
+      color: gray;
+    }
+    .active {
+      color: #54d98c;
+    }
+  }
+}
+
+.row-wrapper {
+  display: flex;
+}
+
+ion-header {
+  background-color: #74b49b;
+  .header {
+    margin: 16px 24px;
+    color: #f4f9f4;
+    display: flex;
+    align-items: center;
+    ion-icon {
+      font-size: 32px;
+      margin-right: 16px;
+    }
+    span {
+      font-size: 20px;
+      margin-top: 2px;
+    }
+  }
+}
+
+.input-wrapper {
+  margin-bottom: 10px;
+  input,
+  textarea {
+    width: 250px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 5px;
+    font-size: 14px;
+    resize: none;
+  }
+
+  input {
+    height: 30px;
+  }
+
+  input:focus,
+  textarea:focus {
+    border-color: #a7d7c5;
+    outline: none;
+  }
+}
+
+.button-wrapper {
+  float: right;
+  margin-bottom: 16px;
+  margin-top: 16px;
+  .green {
+    margin-top: 4px;
+    height: 39px;
+  }
+}
+
+.loading-spinner {
+  ion-spinner {
+    color: #54d98c !important;
+  }
+}
+
+ion-toggle.md.interactive.toggle-ltr.hydrated.toggle-checked {
+  filter: invert(90%) sepia(13%) saturate(531%) hue-rotate(103deg)
+    brightness(93%) contrast(83%);
+}

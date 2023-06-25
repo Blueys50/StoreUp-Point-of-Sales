@@ -1,0 +1,79 @@
+<div class="menu">
+  <div class="header-wrapper">
+    <div class="header" [class.active-menu]="true">Manage</div>
+  </div>
+  <ion-row class="content-wrapper-list manage">
+    <ion-col size="6" size-sm="4">
+      <div class="content">
+        <span (click)="goCashierPage()">
+          <ion-icon src="assets/icon/employee-svgrepo-com.svg"></ion-icon>
+          <div>Cashier</div>
+        </span>
+      </div>
+    </ion-col>
+    <ion-col size="6" size-sm="4">
+      <div class="content">
+        <span (click)="goCustomerPage()">
+          <ion-icon name="people-outline"></ion-icon>
+          <div>Customer</div>
+        </span>
+      </div>
+    </ion-col>
+    <ion-col size="6" size-sm="4">
+      <div class="content">
+        <span (click)="goPaymentMethodPage()">
+          <ion-icon name="cash-outline"></ion-icon>
+          <div>Payment Method</div>
+        </span>
+      </div>
+    </ion-col>
+  </ion-row>
+</div>
+<div class="menu">
+  <div class="header-wrapper">
+    <div class="header" [class.active-menu]="true">Report</div>
+    <!-- <div class="header">Report</div>
+    <div class="header">Database</div> -->
+  </div>
+  <ion-row class="content-wrapper-list manage">
+    <ion-col size="6" size-sm="4">
+      <div class="content">
+        <span (click)="goCashierReport()">
+          <ion-icon name="albums-outline"></ion-icon>
+          <div>Item</div>
+        </span>
+      </div>
+    </ion-col>
+    <ion-col size="6" size-sm="4">
+      <div class="content">
+        <span (click)="goCustomerReport()">
+          <ion-icon name="people-outline"></ion-icon>
+          <div>Customer</div>
+        </span>
+      </div>
+    </ion-col>
+  </ion-row>
+</div>
+<div class="menu">
+  <div class="header-wrapper">
+    <div class="header" [class.active-menu]="true">Database</div>
+  </div>
+  <ion-row class="content-wrapper-list manage">
+    <ion-col size="6" size-sm="4">
+      <div class="content">
+        <span (click)="backupData(true)">
+          <ion-icon name="server-outline"></ion-icon>
+          <div>Backup Data</div>
+        </span>
+      </div>
+    </ion-col>
+    <ion-col size="6" size-sm="4">
+      <div class="content">
+        <span (click)="backupData(false)">
+          <ion-icon src="assets/icon/server-svgrepo-com.svg"></ion-icon>
+          <div>Use Backup</div>
+        </span>
+      </div>
+    </ion-col>
+  </ion-row>
+</div>

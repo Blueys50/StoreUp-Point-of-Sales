@@ -1,0 +1,148 @@
+.item {
+  margin: 0px;
+  height: 100%;
+}
+
+.box {
+  padding: 0px 7px;
+}
+
+.attribute {
+  width: 97px;
+  min-width: 97px;
+}
+
+.spacer {
+  margin-right: 10px;
+}
+
+.selection {
+  width: auto;
+  float: none;
+  justify-content: flex-end;
+  @media (max-width: 352px) {
+    width: max-content;
+  }
+  .spacer {
+    padding: 0px 10px;
+    margin-right: 0px;
+  }
+}
+
+ion-searchbar {
+  max-width: 305px;
+  z-index: 90;
+  margin-top: 8px;
+}
+
+.slide-in {
+  animation: slideInAnimation 0.5s ease;
+}
+.option-wrapper {
+  padding: 8px;
+  background-color: #f2f2f2;
+  margin-top: -10px;
+  position: absolute;
+  max-width: 305px;
+  width: 66vw;
+  border-radius: 8px;
+  overflow-y: auto;
+  height: 200px;
+  border: black 1px solid;
+  z-index: 89;
+  .option {
+    padding: 8px;
+    border-bottom: 1px solid gray;
+  }
+}
+
+@keyframes slideInAnimation {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.scan-wrapper {
+  display: flex !important;
+  .custom-searchbar {
+    max-width: 305px;
+    width: 66vw;
+  }
+  .green {
+    margin-top: 16px;
+    width: auto;
+    margin-right: -4px;
+    ion-icon {
+      margin-right: -4px;
+    }
+    @media (max-width: 567px) {
+      margin-left: 8px;
+    }
+  }
+}
+
+.item-list {
+  height: 260px;
+  overflow-y: auto;
+  .item-container {
+    padding: 6px 32px;
+    margin-top: 6px;
+    margin-bottom: 10px;
+  }
+  .number {
+    width: min-content;
+    z-index: 3;
+    position: relative;
+    margin-left: -32px;
+    margin-top: -6px;
+    padding: 4px;
+    border-radius: 5px;
+    border-bottom: 2px #74b49b solid;
+    border-right: 2px #74b49b solid;
+    font-size: 13px;
+  }
+}
+.item-wrapper {
+  .price-wrapper {
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
+.button-wrapper {
+  display: flex;
+  justify-content: space-between;
+  float: none;
+  margin-bottom: 0px;
+  ion-button,
+  button {
+    width: 48%;
+  }
+}
+
+input {
+  padding: 0px;
+  border: none;
+  border-bottom: 1px #a7d7c5 solid;
+  border-radius: inherit;
+  width: max-content;
+}
+
+.link {
+  color: #a7d7c5 !important;
+  text-decoration: underline;
+}
+
+.modal-content {
+  padding: 0px !important;
+  /* background-color: gray; */
+}
+
+ion-checkbox {
+  --checkbox-background-checked: #a7d7c5;
+}

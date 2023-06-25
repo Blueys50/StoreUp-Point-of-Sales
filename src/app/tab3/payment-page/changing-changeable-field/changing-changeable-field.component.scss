@@ -1,0 +1,57 @@
+.active {
+  filter: invert(90%) sepia(13%) saturate(531%) hue-rotate(103deg)
+    brightness(93%) contrast(83%);
+}
+ion-list {
+  max-height: 323px;
+  overflow-y: auto;
+}
+
+ion-searchbar {
+  max-width: 305px;
+  z-index: 90;
+  margin-top: 8px;
+  width: 305px;
+}
+
+.slide-in {
+  animation: slideInAnimation 0.5s ease;
+}
+.option-wrapper {
+  padding: 8px;
+  background-color: #f2f2f2;
+  margin-top: -10px;
+  max-width: 305px;
+  width: 305px;
+  border-radius: 8px;
+  overflow-y: auto;
+  height: 202px;
+  border: black 1px solid;
+  .option {
+    padding: 8px;
+    border-bottom: 1px solid gray;
+  }
+}
+
+@keyframes slideInAnimation {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.row-wrapper {
+  font-size: 16px;
+  .attribute {
+    width: 160px;
+    min-width: 160px;
+  }
+
+  .spacer {
+    margin-right: 10px;
+  }
+}

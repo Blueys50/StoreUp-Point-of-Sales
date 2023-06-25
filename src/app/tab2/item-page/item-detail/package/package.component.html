@@ -1,0 +1,85 @@
+<modal-component [modalTitle]="modalTitle">
+  <form-group *ngIf="form" [formGroup]="form">
+    <form-field>
+      <label>Package Name*</label>
+      <div class="input-wrapper">
+        <input type="text" formControlName="packageName" />
+      </div>
+    </form-field>
+    <form-field>
+      <label>Price per item*</label>
+      <div class="input-wrapper">
+        <input
+          type="text"
+          inputMode="numeric"
+          formControlName="packagePrice"
+          placeholder="Ex, 1234.56"
+        />
+      </div>
+    </form-field>
+    <form-field>
+      <label>Quantity*</label>
+      <div class="input-wrapper">
+        <input type="text" inputMode="numeric" formControlName="packageQty" />
+      </div>
+    </form-field>
+  </form-group>
+  <ion-row *ngIf="package">
+    <ion-col size="12" size-md="6">
+      <div class="row-wrapper">
+        <div class="attribute"><b>Created By</b></div>
+        <div class="spacer">:</div>
+        {{ package.createdBy ? package.createdBy : "-" }}
+      </div>
+      <div class="row-wrapper">
+        <div class="attribute"><b>Created Date</b></div>
+        <div class="spacer">:</div>
+        {{
+          package.createdDate
+            ? (package.createdDate | date : "dd MMMM yyyy, HH:mm")
+            : "-"
+        }}
+        <br />
+      </div>
+    </ion-col>
+    <ion-col size="12" size-md="6">
+      <div class="row-wrapper">
+        <div class="attribute"><b>Updated By</b></div>
+        <div class="spacer">:</div>
+        {{ package.updatedBy ? package.updatedBy : "-" }}
+      </div>
+      <div class="row-wrapper">
+        <div class="attribute"><b>Updated Date</b></div>
+        <div class="spacer">:</div>
+        {{
+          package.updatedDate
+            ? (package.updatedDate | date : "dd MMMM yyyy, HH:mm")
+            : "-"
+        }}
+        <br />
+      </div>
+    </ion-col>
+    <ion-col size="12" size-md="6">
+      <div class="row-wrapper">
+        <div class="attribute"><b>Last Backup Date</b></div>
+        <div class="spacer">:</div>
+        {{
+          package.lastBackupDate
+            ? (package.lastBackupDate | date : "dd MMMM yyyy, HH:mm")
+            : "-"
+        }}
+      </div>
+    </ion-col>
+  </ion-row>
+
+  <div class="button-wrapper">
+    <ion-button color="danger" (click)="cancel()"> Cancel</ion-button>
+    <ion-button
+      class="green"
+      (click)="makeMultiPrice()"
+      [disabled]="!form.dirty || !form.valid"
+    >
+      Confirm</ion-button
+    >
+  </div>
+</modal-component>

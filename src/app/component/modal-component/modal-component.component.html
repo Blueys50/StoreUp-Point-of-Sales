@@ -1,0 +1,15 @@
+<ion-header>
+  <div class="modal-header" [class.resize-header]="resizeHeader">
+    <div class="modal-title-wrapper" [class.text-center]="titleTextCenter">
+      {{ modalTitle }}
+    </div>
+    <div class="close-button" (click)="close()">
+      <ion-icon name="close"></ion-icon>
+    </div>
+  </div>
+</ion-header>
+<div class="inner-content">
+  <div class="modal-content" [style.padding]="modalPadding">
+    <ng-content></ng-content>
+  </div>
+</div>

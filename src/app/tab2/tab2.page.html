@@ -1,0 +1,9 @@
+<ion-header [translucent]="true" *ngIf="!scanService.scanActive">
+  <ion-title> Storage </ion-title>
+</ion-header>
+
+<ion-content [fullscreen]="true" [hidden]="scanService.scanActive">
+  <item-page *ngIf="commonService.showStorage"></item-page>
+</ion-content>
+
+<scan-view *ngIf="scanService.scanActive"></scan-view>

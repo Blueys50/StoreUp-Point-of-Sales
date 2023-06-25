@@ -1,0 +1,90 @@
+<ion-content [fullscreen]="true" *ngIf="!scanService.scanActive">
+  <div class="container">
+    <div>
+      <div class="selection">
+        <a
+          [class]="!isArchiveList ? 'active-text' : ''"
+          (click)="changeIsArchived()"
+          >Active</a
+        >
+        /
+        <a
+          [class]="isArchiveList ? 'active-text' : ''"
+          (click)="changeIsArchived()"
+          >Archive</a
+        >
+      </div>
+    </div>
+    <div class="search-button">
+      <span
+        ><ion-searchbar
+          class="custom-searchbar"
+          [formControl]="filterForm.controls.search"
+        ></ion-searchbar
+      ></span>
+      <div class="buttons-wrapper">
+        <ion-button mode="ios" class="green two" (click)="addNewItem()"
+          ><ion-icon slot="start" name="add"></ion-icon>
+          <a>Add Item</a>
+        </ion-button>
+        <ion-button mode="ios" class="green two" (click)="scanCode()"
+          ><ion-icon slot="start" name="scan-outline"></ion-icon>
+          <a>Scan Code</a>
+        </ion-button>
+      </div>
+    </div>
+  </div>
+  <ion-row class="box">
+    <ion-col
+      size="12"
+      size-md="6"
+      size-lg="4"
+      *ngFor="let item of itemList; let i = index"
+    >
+      <div class="container item" (click)="edit(item)">
+        <span (click)="preventChangingPage($event)">
+          <icon-popover>
+            <div class="triangle"></div>
+            <div class="popover-option-wrapper">
+              <div (click)="edit(item)" *ngIf="!isArchiveList">Edit Item</div>
+              <div (click)="archiveItem(item)">
+                {{ isArchiveList ? "Reactivate" : "Archive" }} Item
+              </div>
+            </div>
+          </icon-popover>
+        </span>
+        <div>
+          <div class="row-wrapper">
+            <div class="attribute"><b>Item Name</b></div>
+            <div class="spacer">:</div>
+            {{ item.itemName }}
+          </div>
+          <div class="row-wrapper">
+            <div class="attribute"><b>Item Code</b></div>
+            <div class="spacer">:</div>
+            {{ item.itemCode ? item.itemCode : "-" }}
+            <br />
+          </div>
+          <div class="row-wrapper">
+            <div class="attribute"><b>Selling Price</b></div>
+            <div class="spacer">:</div>
+            {{ item.sellingPrice ? item.sellingPrice : "-" }}
+            <br />
+          </div>
+          <div class="row-wrapper">
+            <div class="attribute"><b>Buying Price</b></div>
+            <div class="spacer">:</div>
+            {{ item.buyingPrice ? item.buyingPrice : "-" }}
+            <br />
+          </div>
+        </div>
+      </div>
+    </ion-col>
+    <ion-col
+      size="12"
+      *ngIf="itemList?.length === 0 && isArchiveList && showIsEmpty"
+    >
+      <div class="container item">No Archived Item</div>
+    </ion-col>
+  </ion-row>
+</ion-content>

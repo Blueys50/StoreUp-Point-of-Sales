@@ -1,0 +1,418 @@
+<ion-content [fullscreen]="true" *ngIf="!scanService.scanActive && !modalTitle">
+  <div class="container">
+    <div>
+      <div class="selection">
+        <a [class]="isSales ? 'active-text' : ''" (click)="changeType()"
+          >Sales Invoice</a
+        >
+        <div class="spacer">/</div>
+        <a [class]="!isSales ? 'active-text' : ''" (click)="changeType()"
+          >Purchase Invoice</a
+        >
+      </div>
+    </div>
+    <div class="search-button scan-wrapper">
+      <span
+        ><ion-searchbar
+          class="custom-searchbar"
+          [formControl]="filterForm.controls.search"
+        ></ion-searchbar>
+        <div
+          class="option-wrapper slide-in"
+          *ngIf="showDropdown && itemList.length"
+        >
+          <div
+            class="option"
+            *ngFor="let item of itemList"
+            (click)="selectItem(item)"
+          >
+            {{ item.itemName }} <br />
+            <i *ngIf="item.itemCode">({{ item.itemCode }})</i>
+          </div>
+        </div>
+      </span>
+      <ion-button mode="ios" class="green" (click)="scanCode()"
+        ><ion-icon slot="start" name="scan-outline"></ion-icon>
+      </ion-button>
+    </div>
+  </div>
+  <div class="container">
+    <div class="row-wrapper">
+      <div class="attribute">
+        <b class="link" (click)="changeField('Cashier')">Cashier</b>
+      </div>
+      <div class="spacer">:</div>
+      {{ cashier ? cashier.cashierName : "-" }}
+    </div>
+    <div class="row-wrapper" *ngIf="isSales">
+      <div class="attribute">
+        <b class="link" (click)="changeField('Customer')">Cutomer</b>
+      </div>
+      <div class="spacer">:</div>
+      {{ customer ? customer.customerName : "-" }}
+      <br />
+    </div>
+  </div>
+  <div class="container" *ngIf="isSales">
+    <div class="row-wrapper">
+      <div class="attribute"><b>Total</b></div>
+      <div class="spacer">:</div>
+      {{ sumPriceSales }}
+    </div>
+    <div class="row-wrapper">
+      <div class="attribute">
+        <b class="link" (click)="changeField('PaymentMethod')">{{
+          paymentMethod?.paymentMethodName
+        }}</b>
+      </div>
+      <div class="spacer">:</div>
+      <form-group *ngIf="payForm" [formGroup]="payForm">
+        <form-field>
+          <div class="input-wrapper">
+            <input type="text" inputMode="numeric" formControlName="paySales" />
+          </div>
+        </form-field>
+      </form-group>
+    </div>
+    <div class="row-wrapper">
+      <div class="attribute"><b>Change</b></div>
+      <div class="spacer">:</div>
+      {{ moneyLeftSales }}
+    </div>
+    <div *ngIf="showPrintCheck">
+      <ion-checkbox color="success" [(ngModel)]="isPrint"></ion-checkbox> Print
+      Invoice
+    </div>
+    <div class="button-wrapper">
+      <ion-button color="danger" (click)="abortPayment()">Abort</ion-button>
+      <ion-button
+        class="green"
+        (click)="makePayment()"
+        [disabled]="
+          !payForm?.dirty ||
+          !payForm?.valid ||
+          salesList.length === 0 ||
+          moneyLeftSales === undefined
+        "
+        >Process</ion-button
+      >
+    </div>
+  </div>
+  <div class="container" *ngIf="!isSales">
+    <div class="row-wrapper">
+      <div class="attribute"><b>Total</b></div>
+      <div class="spacer">:</div>
+      {{ sumPricePurchase }}
+    </div>
+    <div class="row-wrapper">
+      <div class="attribute">
+        <b class="link" (click)="changeField('PaymentMethod')">{{
+          paymentMethod?.paymentMethodName
+        }}</b>
+      </div>
+      <div class="spacer">:</div>
+      <form-group *ngIf="purchaseForm" [formGroup]="purchaseForm">
+        <form-field>
+          <div class="input-wrapper">
+            <input
+              type="text"
+              inputMode="numeric"
+              formControlName="payPurchase"
+            />
+          </div>
+        </form-field>
+      </form-group>
+    </div>
+    <div class="row-wrapper">
+      <div class="attribute"><b>Change</b></div>
+      <div class="spacer">:</div>
+      {{ moneyLeftPurchase }}
+    </div>
+    <div class="button-wrapper">
+      <ion-button color="danger" (click)="abortPayment()">Abort</ion-button>
+      <ion-button
+        class="green"
+        (click)="makePayment()"
+        [disabled]="
+          !purchaseForm?.dirty ||
+          !purchaseForm?.valid ||
+          purchaseList.length === 0 ||
+          moneyLeftPurchase === undefined
+        "
+        >Process</ion-button
+      >
+    </div>
+  </div>
+  <div *ngIf="isSales" class="item-list">
+    <div
+      class="container item-container"
+      *ngFor="let item of salesList; let i = index"
+      (click)="edit(item)"
+    >
+      <span (click)="preventChangingPage($event)">
+        <icon-popover>
+          <div class="triangle"></div>
+          <div class="popover-option-wrapper">
+            <div (click)="edit(item)">Edit Item</div>
+            <div (click)="removeItem(item)">Remove Item</div>
+          </div>
+        </icon-popover>
+      </span>
+      <div class="number">{{ i + 1 }}</div>
+      <div class="item-wrapper">
+        {{ item.itemName }}
+        <i *ngIf="item.itemCode">({{ item.itemCode }})</i>
+        <br />
+        <div class="price-wrapper">
+          <span>
+            {{ item.qty }} x {{ item.sellingPrice }}
+            <span *ngIf="item.unit">{{ item.unit }}</span></span
+          >
+          <span>{{ item.totalPrice }}</span>
+        </div>
+        <!-- <div class="row-wrapper">
+          <div class="attribute"><b>Item Name</b></div>
+          <div class="spacer">:</div>
+          {{ item.itemName }}
+        </div>
+        <div class="row-wrapper">
+          <div class="attribute"><b>Item Code</b></div>
+          <div class="spacer">:</div>
+          {{ item.itemCode ? item.itemCode : "-" }}
+          <br />
+        </div>
+        <div class="row-wrapper">
+          <div class="attribute"><b>Selling Price</b></div>
+          <div class="spacer">:</div>
+          {{ item.sellingPrice ? item.sellingPrice : "-" }}
+          <br />
+        </div>
+        <div class="row-wrapper">
+          <div class="attribute"><b>Buying Price</b></div>
+          <div class="spacer">:</div>
+          {{ item.buyingPrice ? item.buyingPrice : "-" }}
+          <br />
+        </div> -->
+      </div>
+    </div>
+  </div>
+  <div *ngIf="!isSales" class="item-list">
+    <div
+      class="container item-container"
+      *ngFor="let item of purchaseList; let i = index"
+      (click)="edit(item)"
+    >
+      <span (click)="preventChangingPage($event)">
+        <icon-popover>
+          <div class="triangle"></div>
+          <div class="popover-option-wrapper">
+            <div (click)="edit(item)">Edit Item</div>
+            <div (click)="removeItem(item)">Remove Item</div>
+          </div>
+        </icon-popover>
+      </span>
+      <div class="number">{{ i + 1 }}</div>
+      <div class="item-wrapper">
+        {{ item.itemName }}
+        <i *ngIf="item.itemCode">({{ item.itemCode }})</i>
+        <br />
+        <div class="price-wrapper">
+          <span>
+            {{ item.qty }} x {{ item.sellingPrice }}
+            <span *ngIf="item.unit">{{ item.unit }}</span></span
+          >
+          <span>{{ item.totalPrice }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>
+<modal-component
+  [modalTitle]="modalTitle"
+  *ngIf="!scanService.scanActive && modalTitle"
+>
+  <div class="container">
+    <div class="search-button scan-wrapper">
+      <span
+        ><ion-searchbar
+          class="custom-searchbar"
+          [formControl]="filterForm.controls.search"
+        ></ion-searchbar>
+        <div
+          class="option-wrapper slide-in"
+          *ngIf="showDropdown && itemList.length"
+        >
+          <div
+            class="option"
+            *ngFor="let item of itemList"
+            (click)="selectItem(item)"
+          >
+            {{ item.itemName }} <br />
+            <i *ngIf="item.itemCode">({{ item.itemCode }})</i>
+          </div>
+        </div>
+      </span>
+    </div>
+  </div>
+  <div class="container">
+    <div class="row-wrapper">
+      <div class="attribute">
+        <b class="link" (click)="changeField('Cashier')">Cashier</b>
+      </div>
+      <div class="spacer">:</div>
+      {{ cashier ? cashier : "-" }}
+    </div>
+    <div class="row-wrapper" *ngIf="isSales">
+      <div class="attribute">
+        <b class="link" (click)="changeField('Customer')">Cutomer</b>
+      </div>
+      <div class="spacer">:</div>
+      {{ customer ? customer : "-" }}
+      <br />
+    </div>
+  </div>
+  <div class="container" *ngIf="isSales">
+    <div class="row-wrapper">
+      <div class="attribute"><b>Total</b></div>
+      <div class="spacer">:</div>
+      {{ sumPriceSales }}
+    </div>
+    <div class="row-wrapper">
+      <div class="attribute">
+        <b class="link" (click)="changeField('PaymentMethod')">{{
+          paymentMethod
+        }}</b>
+      </div>
+      <div class="spacer">:</div>
+      <form-group *ngIf="payForm" [formGroup]="payForm">
+        <form-field>
+          <div class="input-wrapper">
+            <input type="text" inputMode="numeric" formControlName="paySales" />
+          </div>
+        </form-field>
+      </form-group>
+    </div>
+    <div class="row-wrapper">
+      <div class="attribute"><b>Change</b></div>
+      <div class="spacer">:</div>
+      {{ moneyLeftSales }}
+    </div>
+    <div class="button-wrapper">
+      <ion-button color="danger" (click)="cancel()">Cancel</ion-button>
+      <ion-button
+        class="green"
+        (click)="updatePayment()"
+        [disabled]="moneyLeftSales === undefined"
+        >Process</ion-button
+      >
+    </div>
+    <div class="button-wrapper">
+      <ion-button color="danger" (click)="deleteInvoice()"
+        >Delete Invoice</ion-button
+      >
+      <ion-button class="green" (click)="printInvoice(true)">Print</ion-button>
+    </div>
+  </div>
+  <div class="container" *ngIf="!isSales">
+    <div class="row-wrapper">
+      <div class="attribute"><b>Total</b></div>
+      <div class="spacer">:</div>
+      {{ sumPricePurchase }}
+    </div>
+    <div class="row-wrapper">
+      <div class="attribute">
+        <b class="link" (click)="changeField('PaymentMethod')">{{
+          paymentMethod
+        }}</b>
+      </div>
+      <div class="spacer">:</div>
+      <form-group *ngIf="purchaseForm" [formGroup]="purchaseForm">
+        <form-field>
+          <div class="input-wrapper">
+            <input type="text" inputMode="numeric" />
+          </div>
+        </form-field>
+      </form-group>
+    </div>
+    <div class="row-wrapper">
+      <div class="attribute"><b>Change</b></div>
+      <div class="spacer">:</div>
+      {{ moneyLeftPurchase }}
+    </div>
+    <div class="button-wrapper">
+      <ion-button color="danger" (click)="cancel()">Cancel</ion-button>
+      <ion-button
+        class="green"
+        (click)="updatePayment()"
+        [disabled]="moneyLeftPurchase === undefined"
+        >Process</ion-button
+      >
+    </div>
+    <div class="button-wrapper">
+      <ion-button color="danger" (click)="deleteInvoice()"
+        >Delete Invoice</ion-button
+      >
+      <ion-button class="green" (click)="printInvoice(true)">Print</ion-button>
+    </div>
+  </div>
+  <div *ngIf="isSales" class="item-list">
+    <div
+      class="container item-container"
+      *ngFor="let item of salesList; let i = index"
+      (click)="edit(item)"
+    >
+      <span (click)="preventChangingPage($event)">
+        <icon-popover>
+          <div class="triangle"></div>
+          <div class="popover-option-wrapper">
+            <div (click)="edit(item)">Edit Item</div>
+            <div (click)="removeItem(item)">Remove Item</div>
+          </div>
+        </icon-popover>
+      </span>
+      <div class="number">{{ i + 1 }}</div>
+      <div class="item-wrapper">
+        {{ item.itemName }}
+        <i *ngIf="item.itemCode">({{ item.itemCode }})</i>
+        <br />
+        <div class="price-wrapper">
+          <span>
+            {{ item.qty }} x {{ item.sellingPrice }}
+            <span *ngIf="item.unit">{{ item.unit }}</span></span
+          >
+          <span>{{ currency + item.totalPrice }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="!isSales" class="item-list">
+    <div
+      class="container item-container"
+      *ngFor="let item of purchaseList; let i = index"
+      (click)="edit(item)"
+    >
+      <span (click)="preventChangingPage($event)">
+        <icon-popover>
+          <div class="triangle"></div>
+          <div class="popover-option-wrapper">
+            <div (click)="edit(item)">Edit Item</div>
+            <div (click)="removeItem(item)">Remove Item</div>
+          </div>
+        </icon-popover>
+      </span>
+      <div class="number">{{ i + 1 }}</div>
+      <div class="item-wrapper">
+        {{ item.itemName }}
+        <i *ngIf="item.itemCode">({{ item.itemCode }})</i>
+        <br />
+        <div class="price-wrapper">
+          <span>
+            {{ item.qty }} x {{ item.sellingPrice }}
+            <span *ngIf="item.unit">{{ item.unit }}</span></span
+          >
+          <span>{{ item.totalPrice }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</modal-component>

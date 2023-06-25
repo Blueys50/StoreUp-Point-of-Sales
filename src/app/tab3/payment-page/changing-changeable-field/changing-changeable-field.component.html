@@ -1,0 +1,39 @@
+<modal-component [modalTitle]="modalTitle">
+  <div class="row-wrapper">
+    <div class="attribute">
+      <b>Current {{ labelText }}</b>
+    </div>
+    <div class="spacer">:</div>
+    <ion-label *ngIf="this.customer">{{ defaultModel.customerName }}</ion-label>
+    <ion-label *ngIf="this.paymentMethod">{{
+      defaultModel.paymentMethodName
+    }}</ion-label>
+    <ion-label *ngIf="this.cashier">{{ defaultModel.cashierName }}</ion-label>
+  </div>
+  <span
+    ><ion-searchbar
+      class="custom-searchbar"
+      [formControl]="filterForm.controls.search"
+    ></ion-searchbar>
+    <div
+      class="option-wrapper slide-in"
+      *ngIf="showDropdown && itemList.length"
+    >
+      <div
+        class="option"
+        *ngFor="let item of itemList"
+        (click)="selectItem(item)"
+      >
+        <ion-label *ngIf="this.customer">{{ item.customerName }}</ion-label>
+        <ion-label *ngIf="this.paymentMethod">{{
+          item.paymentMethodName
+        }}</ion-label>
+        <ion-label *ngIf="this.cashier">{{ item.cashierName }}</ion-label>
+      </div>
+    </div>
+  </span>
+  <div class="button-wrapper">
+    <ion-button color="danger" (click)="cancel()"> Cancel</ion-button>
+    <ion-button class="green" (click)="changeField()"> Confirm</ion-button>
+  </div>
+</modal-component>

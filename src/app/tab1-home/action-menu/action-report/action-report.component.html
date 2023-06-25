@@ -1,0 +1,67 @@
+<ion-header [translucent]="true">
+  <div class="header">
+    <ion-icon src="assets/icon/arrow-left.svg" (click)="back()"></ion-icon>
+    <span>{{ isItem ? "Item " : "Customer " }}Report</span>
+  </div>
+</ion-header>
+<ion-content [fullscreen]="true">
+  <div class="container">
+    <div>
+      <div>Current Active Params</div>
+      <div class="row-wrapper">
+        <div class="attribute"><b>Start Date</b></div>
+        <input type="date" [(ngModel)]="startDate" />
+      </div>
+      <div class="row-wrapper">
+        <div class="attribute"><b>End Date</b></div>
+        <input type="date" [(ngModel)]="endDate" />
+      </div>
+      <div class="row-wrapper">
+        <div class="attribute"><b>Sort By</b></div>
+      </div>
+      <ion-radio-group [(ngModel)]="sortBy" *ngIf="isItem">
+        <span>
+          <ion-radio value="createdDate"></ion-radio>
+          <ion-label>Date</ion-label>
+        </span>
+        <span>
+          <ion-radio value="totalSales"></ion-radio>
+          <ion-label>Total Sales</ion-label>
+        </span>
+
+        <span>
+          <ion-radio value="salesQty"></ion-radio>
+          <ion-label>Sales Qty</ion-label></span
+        >
+      </ion-radio-group>
+      <ion-radio-group [(ngModel)]="sortBy" *ngIf="!isItem">
+        <span>
+          <ion-radio value="createdDate"></ion-radio>
+          <ion-label>Date</ion-label>
+        </span>
+        <span>
+          <ion-radio value="totalPayment"></ion-radio>
+          <ion-label>Payment</ion-label>
+        </span>
+
+        <span>
+          <ion-radio value="totalCredit"></ion-radio>
+          <ion-label>Credit</ion-label></span
+        >
+      </ion-radio-group>
+    </div>
+    <ion-button (click)="generateReport()" class="green"
+      >Generate report</ion-button
+    >
+  </div>
+  <div class="table-wrapper">
+    <ngpq-table
+      [data]="data"
+      [settings]="settings"
+      *ngIf="showTable"
+      [pageSizeOptions]="[25]"
+      (cellClick)="cellClick($event)"
+    >
+    </ngpq-table>
+  </div>
+</ion-content>

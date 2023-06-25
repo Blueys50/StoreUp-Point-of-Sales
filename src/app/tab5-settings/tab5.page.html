@@ -1,0 +1,7 @@
+<ion-header [translucent]="true">
+  <ion-title> Setting</ion-title>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <setting-view *ngIf="commonService.showSetting"></setting-view>
+</ion-content>

@@ -1,0 +1,118 @@
+<modal-component [modalTitle]="modalTitle">
+  <form-group *ngIf="form" [formGroup]="form">
+    <form-field>
+      <label>Name*</label>
+      <div class="input-wrapper form">
+        <input type="text" formControlName="cashierName" />
+      </div>
+    </form-field>
+    <form-field>
+      <label>{{ cashier ? "Change Pin" : "Pin" }}</label>
+      <div class="input-wrapper">
+        <input
+          type="text"
+          inputmode="numeric"
+          pattern="[0-9]*"
+          oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+          formControlName="pin"
+        />
+      </div>
+    </form-field>
+  </form-group>
+  <ion-row *ngIf="cashier">
+    <ion-col size="12" size-md="6">
+      <div class="row-wrapper">
+        <div class="attribute"><b>Created By</b></div>
+        <div class="spacer">:</div>
+        {{ cashier.createdBy ? cashier.createdBy : "-" }}
+      </div>
+      <div class="row-wrapper">
+        <div class="attribute"><b>Created Date</b></div>
+        <div class="spacer">:</div>
+        {{
+          cashier.createdDate
+            ? (cashier.createdDate | date : "dd MMMM yyyy, HH:mm")
+            : "-"
+        }}
+        <br />
+      </div>
+    </ion-col>
+    <ion-col *ngIf="!cashier.isArchived" size="12" size-md="6">
+      <div class="row-wrapper">
+        <div class="attribute"><b>Updated By</b></div>
+        <div class="spacer">:</div>
+        {{ cashier.updatedBy ? cashier.updatedBy : "-" }}
+      </div>
+      <div class="row-wrapper">
+        <div class="attribute"><b>Updated Date</b></div>
+        <div class="spacer">:</div>
+        {{
+          cashier.updatedDate
+            ? (cashier.updatedDate | date : "dd MMMM yyyy, HH:mm")
+            : "-"
+        }}
+        <br />
+      </div>
+    </ion-col>
+    <ion-col *ngIf="cashier.isArchived" size="12" size-md="6">
+      <div class="row-wrapper">
+        <div class="attribute"><b>Archived By</b></div>
+        <div class="spacer">:</div>
+        {{ cashier.archivedBy ? cashier.archivedBy : "-" }}
+      </div>
+      <div class="row-wrapper">
+        <div class="attribute"><b>Archived Date</b></div>
+        <div class="spacer">:</div>
+        {{
+          cashier.archivedDate
+            ? (cashier.archivedDate | date : "dd MMMM yyyy, HH:mm")
+            : "-"
+        }}
+        <br />
+      </div>
+    </ion-col>
+    <ion-col size="12">
+      <div class="row-wrapper">
+        <div class="attribute"><b>Last Login</b></div>
+        <div class="spacer">:</div>
+        {{
+          cashier.lastLogin
+            ? (cashier.lastLogin | date : "dd MMMM yyyy, HH:mm")
+            : "-"
+        }}
+      </div>
+      <div class="row-wrapper">
+        <div class="attribute"><b>Last Logout</b></div>
+        <div class="spacer">:</div>
+        {{
+          cashier.lastLogin
+            ? (cashier.lastLogout | date : "dd MMMM yyyy, HH:mm")
+            : "-"
+        }}
+        <br />
+      </div>
+    </ion-col>
+    <ion-col size="12" size-md="6">
+      <div class="row-wrapper">
+        <div class="attribute"><b>Last Backup Date</b></div>
+        <div class="spacer">:</div>
+        {{
+          cashier.lastBackupDate
+            ? (cashier.lastBackupDate | date : "dd MMMM yyyy, HH:mm")
+            : "-"
+        }}
+      </div>
+    </ion-col>
+  </ion-row>
+
+  <div class="button-wrapper">
+    <ion-button color="danger" (click)="cancel()"> Cancel</ion-button>
+    <ion-button
+      class="green"
+      (click)="makeCashier()"
+      [disabled]="!form.dirty || !form.valid"
+    >
+      Confirm</ion-button
+    >
+  </div>
+</modal-component>

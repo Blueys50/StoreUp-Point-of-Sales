@@ -1,0 +1,9 @@
+<ion-header [translucent]="true" *ngIf="!scanService.scanActive">
+  <ion-title> Payment </ion-title>
+</ion-header>
+
+<ion-content [fullscreen]="true" [hidden]="scanService.scanActive">
+  <payment-page *ngIf="commonService.showPayment"></payment-page>
+</ion-content>
+
+<scan-view *ngIf="scanService.scanActive"></scan-view>

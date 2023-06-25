@@ -1,0 +1,7 @@
+<ion-header [translucent]="true">
+  <ion-title> Invoice </ion-title>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <invoice-list *ngIf="commonService.showInvoiceReport"></invoice-list>
+</ion-content>

@@ -1,0 +1,79 @@
+<modal-component [modalTitle]="modalTitle">
+  <form-group *ngIf="form" [formGroup]="form">
+    <form-field>
+      <label>Price per item*</label>
+      <div class="input-wrapper">
+        <input
+          type="text"
+          inputMode="numeric"
+          formControlName="price"
+          placeholder="Ex, 1234.56"
+        />
+      </div>
+    </form-field>
+    <form-field>
+      <label>Minimum Quantity*</label>
+      <div class="input-wrapper">
+        <input type="text" inputMode="numeric" formControlName="minimumQty" />
+      </div>
+    </form-field>
+  </form-group>
+  <ion-row *ngIf="wholesalePrice">
+    <ion-col size="12" size-md="6">
+      <div class="row-wrapper">
+        <div class="attribute"><b>Created By</b></div>
+        <div class="spacer">:</div>
+        {{ wholesalePrice.createdBy ? wholesalePrice.createdBy : "-" }}
+      </div>
+      <div class="row-wrapper">
+        <div class="attribute"><b>Created Date</b></div>
+        <div class="spacer">:</div>
+        {{
+          wholesalePrice.createdDate
+            ? (wholesalePrice.createdDate | date : "dd MMMM yyyy, HH:mm")
+            : "-"
+        }}
+        <br />
+      </div>
+    </ion-col>
+    <ion-col size="12" size-md="6">
+      <div class="row-wrapper">
+        <div class="attribute"><b>Updated By</b></div>
+        <div class="spacer">:</div>
+        {{ wholesalePrice.updatedBy ? wholesalePrice.updatedBy : "-" }}
+      </div>
+      <div class="row-wrapper">
+        <div class="attribute"><b>Updated Date</b></div>
+        <div class="spacer">:</div>
+        {{
+          wholesalePrice.updatedDate
+            ? (wholesalePrice.updatedDate | date : "dd MMMM yyyy, HH:mm")
+            : "-"
+        }}
+        <br />
+      </div>
+    </ion-col>
+    <ion-col size="12" size-md="6">
+      <div class="row-wrapper">
+        <div class="attribute"><b>Last Backup Date</b></div>
+        <div class="spacer">:</div>
+        {{
+          wholesalePrice.lastBackupDate
+            ? (wholesalePrice.lastBackupDate | date : "dd MMMM yyyy, HH:mm")
+            : "-"
+        }}
+      </div>
+    </ion-col>
+  </ion-row>
+
+  <div class="button-wrapper">
+    <ion-button color="danger" (click)="cancel()"> Cancel</ion-button>
+    <ion-button
+      class="green"
+      (click)="makeWholeasalePrice()"
+      [disabled]="!form.dirty || !form.valid"
+    >
+      Confirm</ion-button
+    >
+  </div>
+</modal-component>

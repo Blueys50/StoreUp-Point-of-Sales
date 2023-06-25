@@ -1,0 +1,125 @@
+<ion-header [translucent]="true">
+  <div class="header">
+    <ion-icon src="assets/icon/arrow-left.svg" (click)="back()"></ion-icon>
+    <span>Customer</span>
+  </div>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="container">
+    <div>
+      <div class="selection">
+        <a
+          [class]="!isArchiveList ? 'active-text' : ''"
+          (click)="changeIsArchived()"
+          >Active</a
+        >
+        /
+        <a
+          [class]="isArchiveList ? 'active-text' : ''"
+          (click)="changeIsArchived()"
+          >Archive</a
+        >
+      </div>
+    </div>
+    <div class="search-button">
+      <span
+        ><ion-searchbar
+          class="custom-searchbar"
+          [formControl]="filterForm.controls.search"
+        ></ion-searchbar
+      ></span>
+      <ion-button mode="ios" class="green" (click)="addNewCustomer()"
+        ><ion-icon slot="start" name="add"></ion-icon>
+        <a>Add Customer</a>
+      </ion-button>
+    </div>
+  </div>
+  <ion-row class="box">
+    <ion-col
+      size="12"
+      size-md="6"
+      *ngIf="defaultCustomer?.customerId && !isArchiveList"
+    >
+      <div
+        class="container customer active-container"
+        (click)="edit(defaultCustomer, true)"
+      >
+        <span (click)="preventChangingPage($event)">
+          <icon-popover>
+            <div class="triangle"></div>
+            <div class="popover-option-wrapper">
+              <div (click)="edit(defaultCustomer, true)">Edit Customer</div>
+            </div>
+          </icon-popover>
+        </span>
+        <div>
+          {{ defaultCustomer.customerName }} <br />
+          <div class="row-wrapper">
+            <div class="attribute"><b>Phone Number</b></div>
+            <div class="spacer">:</div>
+            {{
+              defaultCustomer.customerPhone
+                ? defaultCustomer.customerPhone
+                : "-"
+            }}
+          </div>
+          <div class="row-wrapper">
+            <div class="attribute"><b>Email</b></div>
+            <div class="spacer">:</div>
+            {{
+              defaultCustomer.customerEmail
+                ? defaultCustomer.customerEmail
+                : "-"
+            }}
+            <br />
+          </div>
+        </div>
+      </div>
+    </ion-col>
+    <ion-col
+      size="12"
+      size-md="6"
+      *ngFor="let customer of customerList; let i = index"
+    >
+      <div class="container customer" (click)="edit(customer)">
+        <span (click)="preventChangingPage($event)">
+          <icon-popover>
+            <div class="triangle"></div>
+            <div class="popover-option-wrapper">
+              <div (click)="edit(customer)" *ngIf="!isArchiveList">
+                Edit Customer
+              </div>
+              <div (click)="setAsDefault(customer)" *ngIf="!isArchiveList">
+                Set as default customer
+              </div>
+              <div (click)="archiveCustomer(customer)">
+                {{ isArchiveList ? "Reactivate" : "Archive" }} Customer
+              </div>
+            </div>
+          </icon-popover></span
+        >
+        <div>
+          {{ customer.customerName }} <br />
+          <div class="row-wrapper">
+            <div class="attribute"><b>Phone Number</b></div>
+            <div class="spacer">:</div>
+            {{ customer.customerPhone ? customer.customerPhone : "-" }}
+          </div>
+          <div class="row-wrapper">
+            <div class="attribute"><b>Email</b></div>
+            <div class="spacer">:</div>
+            {{ customer.customerEmail ? customer.customerEmail : "-" }}
+            <br />
+          </div>
+        </div>
+      </div>
+    </ion-col>
+    <ion-col
+      size="12"
+      *ngIf="customerList?.length === 0 && isArchiveList && showIsEmpty"
+    >
+      <div class="container customer">No Archived Customer</div>
+    </ion-col>
+  </ion-row>
+</ion-content>

@@ -1,0 +1,100 @@
+<modal-component [modalTitle]="modalTitle">
+  <form-group *ngIf="form" [formGroup]="form">
+    <form-field class="no-click">
+      <label>Item Name (Uneditbale)</label>
+      <div class="input-wrapper">
+        <input type="text" formControlName="itemName" />
+      </div>
+    </form-field>
+    <form-field>
+      <label>Qty*</label>
+      <div class="input-wrapper">
+        <input type="qty" inputMode="numeric" formControlName="qty" />
+      </div>
+    </form-field>
+    <form-field>
+      <label>Unit</label>
+      <div class="input-wrapper">
+        <input type="text" formControlName="unit" />
+      </div>
+    </form-field>
+    <form-field>
+      <label>Price per item*</label>
+      <div class="input-wrapper">
+        <input type="text" inputMode="numeric" formControlName="sellingPrice" />
+      </div>
+    </form-field>
+  </form-group>
+  <span *ngIf="paymentItem.isCountStock && isSales"
+    >Leftover item in stock: {{ paymentItem.stockAfter }}</span
+  >
+
+  <div *ngIf="isSales" class="ion-padding-top">
+    <div class="content-wrapper" *ngIf="multiPrice?.length !== 0">
+      <div class="pricing-title">Multi Pricing</div>
+      <div class="pricing-content-wrapper">
+        <div
+          *ngFor="let mp of multiPrice"
+          class="pricing-content"
+          (click)="useMultiPrice(mp)"
+        >
+          {{
+            mp.description
+              ? (mp.description | slice : 0 : 12) +
+                (mp.description.length > 12 ? "..." : "")
+              : "-"
+          }}
+          <div class="row-wrapper">
+            <div class="attribute multi-price"><b>Price</b></div>
+            <div class="spacer">:</div>
+            {{ mp.price }}
+            <br />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="content-wrapper" *ngIf="package?.length !== 0">
+      <div class="pricing-title ion-padding-top">Packages</div>
+      <div class="pricing-content-wrapper">
+        <div
+          *ngFor="let pack of package"
+          class="pricing-content"
+          (click)="usePackage(pack)"
+        >
+          {{
+            pack.packageName
+              ? (pack.packageName | slice : 0 : 12) +
+                (pack.packageName.length > 12 ? "..." : "")
+              : "-"
+          }}
+          <div class="row-wrapper">
+            <div class="attribute multi-price"><b>Price</b></div>
+            <div class="spacer">:</div>
+            {{ pack.packagePrice }}
+            <br />
+          </div>
+          <div class="row-wrapper">
+            <div class="attribute multi-price"><b>Qty</b></div>
+            <div class="spacer">:</div>
+            {{ pack.packageQty }}
+            <br />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="button-wrapper">
+    <ion-button color="warning" class="warning" (click)="remove()"
+      >Remove</ion-button
+    >
+    <ion-button color="danger" (click)="cancel()">Cancel</ion-button>
+    <ion-button
+      class="green margin-left"
+      (click)="editItem()"
+      [disabled]="!form.dirty || !form.valid"
+    >
+      Confirm</ion-button
+    >
+  </div>
+</modal-component>

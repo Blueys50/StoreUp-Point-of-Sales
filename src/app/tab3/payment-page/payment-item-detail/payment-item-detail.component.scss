@@ -1,0 +1,52 @@
+.attribute {
+  width: 115px;
+  min-width: 115px;
+}
+
+.spacer {
+  margin-right: 10px;
+}
+
+ion-col {
+  padding-left: 0px;
+}
+
+.margin-left {
+  margin-left: 1px;
+}
+
+.content-wrapper {
+  padding: 0px 0px;
+  font-size: 14px;
+}
+
+.pricing-content-wrapper {
+  display: flex;
+  overflow-x: auto;
+  margin-top: 8px;
+  border-radius: 8px;
+  padding: 8px 10px;
+  background-color: #f4f4f4;
+  min-height: 66px;
+  .pricing-content {
+    padding: 8px 10px;
+    border-radius: 8px;
+    margin-right: 8px;
+    background-color: white;
+    border: 1px solid #54d98c;
+    min-width: 135px;
+    display: inline-table;
+    .multi-price {
+      width: 45px;
+      min-width: 45px;
+    }
+    .min-qty {
+      width: 95px;
+      min-width: 95px;
+    }
+  }
+}
+
+.no-click {
+  pointer-events: none;
+}

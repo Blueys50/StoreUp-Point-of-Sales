@@ -1,0 +1,24 @@
+ion-radio-group {
+  display: flex;
+  flex-direction: column-reverse;
+  span {
+    display: flex;
+    align-items: center;
+    div {
+      margin-left: 8px;
+    }
+  }
+  ion-radio {
+    filter: invert(90%) sepia(13%) saturate(531%) hue-rotate(103deg)
+      brightness(93%) contrast(83%);
+  }
+}
+
+.select-text {
+  margin-top: 16px;
+  margin-bottom: 8px;
+  .link {
+    color: #54d98c !important;
+    text-decoration: underline;
+  }
+}

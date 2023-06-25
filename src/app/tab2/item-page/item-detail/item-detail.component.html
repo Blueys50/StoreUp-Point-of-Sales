@@ -1,0 +1,281 @@
+<ion-header [translucent]="true" *ngIf="!scanService.scanActive">
+  <div class="header">
+    <ion-icon src="assets/icon/arrow-left.svg" (click)="back()"></ion-icon>
+    <span>Item Detail</span>
+  </div>
+</ion-header>
+
+<ion-content [fullscreen]="true" *ngIf="!scanService.scanActive">
+  <ion-row>
+    <ion-col size="12" size-sm="6">
+      <div class="container">
+        <div class="header-title"><div class="title">Detail</div></div>
+        <div class="form-wrapper">
+          <form-group *ngIf="form" [formGroup]="form">
+            <ion-row>
+              <ion-col size="7">
+                <form-field>
+                  <label>Item Name*</label>
+                  <div class="input-wrapper form">
+                    <input type="text" formControlName="itemName" />
+                  </div>
+                </form-field>
+              </ion-col>
+              <ion-col offset="0.3">
+                <form-field>
+                  <label
+                    >Code (<span class="link" (click)="scan()">Scan</span
+                    >)</label
+                  >
+                  <div class="input-wrapper form">
+                    <input type="text" formControlName="itemCode" />
+                  </div>
+                </form-field>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col>
+                <form-field>
+                  <label>Buying Price</label>
+                  <div class="input-wrapper form">
+                    <input
+                      type="text"
+                      inputMode="numeric"
+                      formControlName="buyingPrice"
+                      placeholder="Ex, 1234.56"
+                    />
+                  </div>
+                </form-field>
+              </ion-col>
+              <ion-col offset="0.3">
+                <form-field>
+                  <label>Selling Price*</label>
+                  <div class="input-wrapper form">
+                    <input
+                      type="text"
+                      inputMode="numeric"
+                      formControlName="sellingPrice"
+                      placeholder="Ex, 1234.56"
+                    />
+                  </div>
+                </form-field>
+              </ion-col>
+            </ion-row>
+            <div class="toggle-wrapper">
+              Turn on stock
+              <ion-toggle formControlName="isCountStock"></ion-toggle>
+            </div>
+            <form-field *ngIf="form.value.isCountStock">
+              <label>Stock</label>
+              <div class="input-wrapper form">
+                <input type="text" formControlName="stock" />
+              </div>
+            </form-field>
+            <form-field>
+              <label>Unit Name</label>
+              <div class="input-wrapper form">
+                <input type="text" formControlName="unitName" />
+              </div>
+            </form-field>
+          </form-group>
+          <div class="button-wrapper button-form">
+            <ion-button
+              class="green"
+              (click)="makeItem()"
+              [disabled]="!form?.dirty || !form?.valid"
+            >
+              Confirm</ion-button
+            >
+            <ion-button color="danger" (click)="cancel()"> Cancel</ion-button>
+          </div>
+        </div>
+      </div>
+    </ion-col>
+    <ion-col size="12" size-sm="6" *ngIf="item?.itemId">
+      <div class="container no-margin-top">
+        <div class="header-title"><div class="title">Price Option</div></div>
+        <div class="content-wrapper">
+          <div class="pricing-title">
+            Multi Pricing
+            <span
+              >(<span class="link" (click)="addMultiPrice()"
+                >Add new multi price</span
+              >)</span
+            >
+          </div>
+          <div class="pricing-content-wrapper">
+            <div
+              *ngFor="let mp of multiPrice"
+              class="pricing-content"
+              (click)="addMultiPrice(mp)"
+            >
+              <span (click)="preventChangingPage($event)">
+                <icon-popover>
+                  <div class="triangle"></div>
+                  <div class="popover-option-wrapper">
+                    <div (click)="addMultiPrice(mp)">Edit multi price</div>
+                    <div (click)="deleteMultiPrice(mp)">Delete multi price</div>
+                  </div>
+                </icon-popover>
+              </span>
+              {{
+                mp.description
+                  ? (mp.description | slice : 0 : 12) +
+                    (mp.description.length > 12 ? "..." : "")
+                  : "-"
+              }}
+              <div class="row-wrapper">
+                <div class="attribute multi-price"><b>Price</b></div>
+                <div class="spacer">:</div>
+                {{ mp.price }}
+                <br />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="content-wrapper">
+          <div class="pricing-title ion-padding-top">
+            Packages
+            <span
+              >(<span class="link" (click)="addPackage()">Add new package</span
+              >)</span
+            >
+          </div>
+          <div class="pricing-content-wrapper">
+            <div
+              *ngFor="let pack of package"
+              class="pricing-content"
+              (click)="addPackage(pack)"
+            >
+              <span (click)="preventChangingPage($event)">
+                <icon-popover>
+                  <div class="triangle"></div>
+                  <div class="popover-option-wrapper">
+                    <div (click)="addPackage(pack)">Edit multi price</div>
+                    <div (click)="deletePackage(pack)">Delete multi price</div>
+                  </div>
+                </icon-popover>
+              </span>
+              {{
+                pack.packageName
+                  ? (pack.packageName | slice : 0 : 12) +
+                    (pack.packageName.length > 12 ? "..." : "")
+                  : "-"
+              }}
+              <div class="row-wrapper">
+                <div class="attribute multi-price"><b>Price</b></div>
+                <div class="spacer">:</div>
+                {{ pack.packagePrice }}
+                <br />
+              </div>
+              <div class="row-wrapper">
+                <div class="attribute multi-price"><b>Qty</b></div>
+                <div class="spacer">:</div>
+                {{ pack.packageQty }}
+                <br />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="content-wrapper">
+          <div class="pricing-title ion-padding-top">
+            Wholesale Price
+            <span *ngIf="wholesalePrice?.length !== 1"
+              >(<span class="link" (click)="addWholesalePrice()"
+                >Add Wholesale Price</span
+              >)</span
+            >
+          </div>
+          <div class="pricing-content-wrapper">
+            <div
+              *ngFor="let wp of wholesalePrice"
+              class="pricing-content"
+              (click)="addWholesalePrice(wp)"
+            >
+              <span (click)="preventChangingPage($event)">
+                <icon-popover>
+                  <div class="triangle"></div>
+                  <div class="popover-option-wrapper">
+                    <div (click)="addWholesalePrice(wp)">
+                      Edit wholesale price
+                    </div>
+                    <div (click)="deleteWholesalePrice(wp)">
+                      Delete wholesale price
+                    </div>
+                  </div>
+                </icon-popover>
+              </span>
+              <div class="row-wrapper">
+                <div class="attribute multi-price"><b>Price</b></div>
+                <div class="spacer">:</div>
+                {{ wp.price }}
+                <br />
+              </div>
+              <div class="row-wrapper">
+                <div class="attribute min-qty"><b>Minimum Qty</b></div>
+                <div class="spacer">:</div>
+                {{ wp.minimumQty }}
+                <br />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ion-col>
+    <ion-col size="12" *ngIf="item?.itemId">
+      <div class="container no-margin-top">
+        <div class="header-title"><div class="title">Snapshot</div></div>
+        <div class="form-wrapper">
+          <ion-row>
+            <ion-col size="12" size-md="6">
+              <div class="row-wrapper">
+                <div class="attribute"><b>Created By</b></div>
+                <div class="spacer">:</div>
+                {{ item.createdBy ? item.createdBy : "-" }}
+              </div>
+              <div class="row-wrapper">
+                <div class="attribute"><b>Created Date</b></div>
+                <div class="spacer">:</div>
+                {{
+                  item.createdDate
+                    ? (item.createdDate | date : "dd MMMM yyyy, HH:mm")
+                    : "-"
+                }}
+                <br />
+              </div>
+            </ion-col>
+            <ion-col size="12" size-md="6">
+              <div class="row-wrapper">
+                <div class="attribute"><b>Updated By</b></div>
+                <div class="spacer">:</div>
+                {{ item.updatedBy ? item.updatedBy : "-" }}
+              </div>
+              <div class="row-wrapper">
+                <div class="attribute"><b>Updated Date</b></div>
+                <div class="spacer">:</div>
+                {{
+                  item.updatedDate
+                    ? (item.updatedDate | date : "dd MMMM yyyy, HH:mm")
+                    : "-"
+                }}
+                <br />
+              </div>
+            </ion-col>
+            <ion-col size="12" size-md="6">
+              <div class="row-wrapper">
+                <div class="attribute"><b>Last Backup Date</b></div>
+                <div class="spacer">:</div>
+                {{
+                  item.lastBackupDate
+                    ? (item.lastBackupDate | date : "dd MMMM yyyy, HH:mm")
+                    : "-"
+                }}
+              </div>
+            </ion-col>
+          </ion-row>
+        </div>
+      </div>
+    </ion-col>
+  </ion-row>
+</ion-content>
+<scan-view *ngIf="scanService.scanActive"></scan-view>

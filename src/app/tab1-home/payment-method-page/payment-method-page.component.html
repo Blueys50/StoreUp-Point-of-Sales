@@ -1,0 +1,85 @@
+<ion-header [translucent]="true">
+  <div class="header">
+    <ion-icon src="assets/icon/arrow-left.svg" (click)="back()"></ion-icon>
+    <span>Payment Method</span>
+  </div>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="container">
+    <div>
+      <div class="selection">
+        <a
+          [class]="!isArchiveList ? 'active-text' : ''"
+          (click)="changeIsArchived()"
+          >Active</a
+        >
+        /
+        <a
+          [class]="isArchiveList ? 'active-text' : ''"
+          (click)="changeIsArchived()"
+          >Archive</a
+        >
+      </div>
+    </div>
+    <div class="search-button">
+      <span
+        ><ion-searchbar
+          class="custom-searchbar"
+          [formControl]="filterForm.controls.search"
+        ></ion-searchbar
+      ></span>
+      <ion-button mode="ios" class="green" (click)="addPaymentMethod()"
+        ><ion-icon slot="start" name="add"></ion-icon>
+        <a>Add Payment Method</a>
+      </ion-button>
+    </div>
+  </div>
+  <ion-row class="box">
+    <ion-col
+      size="12"
+      size-md="6"
+      *ngIf="defaultPaymentMethod?.paymentMethodName && !isArchiveList"
+    >
+      <div class="container payment-method active-container">
+        <div>{{ defaultPaymentMethod.paymentMethodName }} <br /></div>
+      </div>
+    </ion-col>
+    <ion-col
+      size="12"
+      size-md="6"
+      *ngFor="let paymentMethod of paymentMethodList; let i = index"
+    >
+      <div class="container payment-method">
+        <span (click)="preventChangingPage($event)">
+          <icon-popover>
+            <div class="triangle"></div>
+            <div class="popover-option-wrapper">
+              <div (click)="setAsDefault(paymentMethod)" *ngIf="!isArchiveList">
+                Set as default payment method
+              </div>
+              <div (click)="archivePaymentMethod(paymentMethod)">
+                {{ isArchiveList ? "Reactivate" : "Archive" }} Payment Method
+              </div>
+              <div
+                (click)="deletePaymentMethod(paymentMethod)"
+                *ngIf="
+                  !isArchiveList && paymentMethod.paymentMethodName !== 'Cash'
+                "
+              >
+                Delete Payment Method
+              </div>
+            </div>
+          </icon-popover>
+        </span>
+        <div>{{ paymentMethod.paymentMethodName }} <br /></div>
+      </div>
+    </ion-col>
+    <ion-col
+      size="12"
+      *ngIf="paymentMethodList?.length === 0 && isArchiveList && showIsEmpty"
+    >
+      <div class="container payment-method">No Archived Payment Method</div>
+    </ion-col>
+  </ion-row>
+</ion-content>

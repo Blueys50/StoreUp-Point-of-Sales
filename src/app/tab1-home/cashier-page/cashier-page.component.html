@@ -1,0 +1,135 @@
+<ion-header [translucent]="true">
+  <div class="header">
+    <ion-icon src="assets/icon/arrow-left.svg" (click)="back()"></ion-icon>
+    <span>Cashier</span>
+  </div>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="container">
+    <div>
+      <div class="selection">
+        <a
+          [class]="!isArchiveList ? 'active-text' : ''"
+          (click)="changeIsArchived()"
+          >Active</a
+        >
+        /
+        <a
+          [class]="isArchiveList ? 'active-text' : ''"
+          (click)="changeIsArchived()"
+          >Archive</a
+        >
+      </div>
+    </div>
+    <div class="search-button">
+      <span
+        ><ion-searchbar
+          class="custom-searchbar"
+          [formControl]="filterForm.controls.search"
+        ></ion-searchbar
+      ></span>
+      <ion-button mode="ios" class="green" (click)="addNewCashier()"
+        ><ion-icon slot="start" name="add"></ion-icon>
+        <a>Add Cashier</a>
+      </ion-button>
+    </div>
+  </div>
+  <ion-row class="box">
+    <ion-col
+      size="12"
+      size-md="6"
+      size-lg="4"
+      *ngIf="activeCashier?.cashierId && !isArchiveList"
+    >
+      <div
+        class="container cashier active-container"
+        (click)="edit(activeCashier, true)"
+      >
+        <span (click)="preventChangingPage($event)">
+          <icon-popover>
+            <div class="triangle"></div>
+            <div class="popover-option-wrapper">
+              <div (click)="edit(activeCashier, true)">Edit Cashier</div>
+            </div>
+          </icon-popover>
+        </span>
+        <div>
+          {{ activeCashier.cashierName }} <br />
+          <div class="row-wrapper">
+            <div class="attribute"><b>Last Login</b></div>
+            <div class="spacer">:</div>
+            {{
+              activeCashier.lastLogin
+                ? (activeCashier.lastLogin | date : "dd MMMM yyyy, HH:mm")
+                : "-"
+            }}
+          </div>
+          <div class="row-wrapper">
+            <div class="attribute"><b>Last Logout</b></div>
+            <div class="spacer">:</div>
+            {{
+              activeCashier.lastLogin
+                ? (activeCashier.lastLogout | date : "dd MMMM yyyy, HH:mm")
+                : "-"
+            }}
+            <br />
+          </div>
+        </div>
+      </div>
+    </ion-col>
+    <ion-col
+      size="12"
+      size-md="6"
+      size-lg="4"
+      *ngFor="let cashier of cashierList; let i = index"
+    >
+      <div class="container cashier" (click)="edit(cashier)">
+        <span (click)="preventChangingPage($event)">
+          <icon-popover>
+            <div class="triangle"></div>
+            <div class="popover-option-wrapper">
+              <div (click)="edit(cashier)" *ngIf="!isArchiveList">
+                Edit Cashier
+              </div>
+              <div (click)="setAsActive(cashier)" *ngIf="!isArchiveList">
+                Set as active cashier
+              </div>
+              <div (click)="archiveCashier(cashier)">
+                {{ isArchiveList ? "Reactivate" : "Archive" }} Cashier
+              </div>
+            </div>
+          </icon-popover>
+        </span>
+        <div>
+          {{ cashier.cashierName }} <br />
+          <div class="row-wrapper">
+            <div class="attribute"><b>Last Login</b></div>
+            <div class="spacer">:</div>
+            {{
+              cashier.lastLogin
+                ? (cashier.lastLogin | date : "dd MMMM yyyy, HH:mm")
+                : "-"
+            }}
+          </div>
+          <div class="row-wrapper">
+            <div class="attribute"><b>Last Logout</b></div>
+            <div class="spacer">:</div>
+            {{
+              cashier.lastLogin
+                ? (cashier.lastLogout | date : "dd MMMM yyyy, HH:mm")
+                : "-"
+            }}
+            <br />
+          </div>
+        </div>
+      </div>
+    </ion-col>
+    <ion-col
+      size="12"
+      *ngIf="cashierList?.length === 0 && isArchiveList && showIsEmpty"
+    >
+      <div class="container cashier">No Archived Cashier</div>
+    </ion-col>
+  </ion-row>
+</ion-content>

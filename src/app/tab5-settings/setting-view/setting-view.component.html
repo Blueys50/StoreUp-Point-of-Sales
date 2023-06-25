@@ -1,0 +1,98 @@
+<div class="container">
+  <div class="header-title"><div class="title">Google Account</div></div>
+  <div class="content">
+    <div class="row-wrapper">
+      <div class="attribute"><b>Email</b></div>
+      <div class="spacer">:</div>
+      {{ googleService.user?.email ? googleService.user?.email : "-" }}
+    </div>
+    <div class="row-wrapper">
+      <div class="attribute"><b>Name</b></div>
+      <div class="spacer">:</div>
+      {{
+        googleService.user?.displayName ? googleService.user?.displayName : "-"
+      }}
+    </div>
+    <ion-button
+      class="green"
+      (click)="loginGoogle()"
+      *ngIf="!googleService.user?.email"
+    >
+      <ion-icon slot="start" name="logo-google"></ion-icon>
+      Login</ion-button
+    >
+    <ion-button
+      color="danger"
+      class="logout"
+      (click)="logOut()"
+      *ngIf="googleService.user?.email"
+    >
+      <ion-icon slot="start" name="logo-google"></ion-icon>
+      Logout</ion-button
+    >
+  </div>
+</div>
+<div class="container">
+  <div class="header-title"><div class="title">Company Setting</div></div>
+  <div class="content">
+    <form-group *ngIf="form" [formGroup]="form">
+      <form-field>
+        <label>Company Name*</label>
+        <div class="input-wrapper form">
+          <input type="text" formControlName="companyName" />
+        </div>
+      </form-field>
+      <form-field>
+        <label>Company Address</label>
+        <div class="input-wrapper">
+          <textarea
+            rows="4"
+            formControlName="companyAddress"
+            class="text-area"
+          ></textarea>
+        </div>
+      </form-field>
+      <form-field>
+        <label>Footer</label>
+        <div class="input-wrapper">
+          <input type="text" formControlName="footerText" />
+        </div>
+      </form-field>
+      <form-field>
+        <label>Currency</label>
+        <div class="input-wrapper">
+          <input type="text" formControlName="currency" />
+        </div>
+      </form-field>
+      <div class="toggle-wrapper">
+        Allow Printing
+        <ion-toggle formControlName="allowPrint"></ion-toggle>
+      </div>
+      <form-field *ngIf="form.value.allowPrint">
+        <label>Max char per line during printing</label>
+        <div class="input-wrapper">
+          <input type="text" formControlName="maxCharLine" />
+        </div>
+      </form-field>
+      <label
+        class="link"
+        *ngIf="form.value.allowPrint"
+        (click)="choosePrinter()"
+        >Bluetooth Printer</label
+      >
+      <div *ngIf="form.value.allowPrint">
+        {{ currentPrinter ? currentPrinter.name : "None" }}
+      </div>
+    </form-group>
+    <div class="button-wrapper">
+      <ion-button
+        class="green"
+        (click)="saveSetting()"
+        [disabled]="!form?.dirty || !form?.valid"
+      >
+        Confirm</ion-button
+      >
+      <ion-button color="danger" (click)="cancel()"> Cancel</ion-button>
+    </div>
+  </div>
+</div>

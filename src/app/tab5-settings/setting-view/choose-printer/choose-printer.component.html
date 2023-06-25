@@ -1,0 +1,28 @@
+<modal-component [modalTitle]="modalTitle">
+  Old printer: {{ printer ? printer.name + "(" + printer.address + ")" : "-" }}
+  <br />
+  <div class="select-text">
+    Select the available printer (<span class="link" (click)="refresh()"
+      >Refresh Option</span
+    >)
+  </div>
+  <br />
+  <ion-radio-group [(ngModel)]="selectedPrinter">
+    <span *ngFor="let item of bluetoothList">
+      <ion-radio [value]="item"></ion-radio>
+      <div (click)="selectPrinter(item)">
+        {{ item.name }} ({{ item.address }})
+      </div>
+    </span>
+  </ion-radio-group>
+  <div class="button-wrapper">
+    <ion-button color="danger" (click)="cancel()"> Cancel</ion-button>
+    <ion-button
+      class="green"
+      (click)="addPrinter()"
+      [disabled]="!selectedPrinter"
+    >
+      Confirm</ion-button
+    >
+  </div>
+</modal-component>

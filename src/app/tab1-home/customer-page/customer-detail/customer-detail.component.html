@@ -1,0 +1,107 @@
+<modal-component [modalTitle]="modalTitle">
+  <form-group *ngIf="form" [formGroup]="form">
+    <form-field>
+      <label>Name*</label>
+      <div class="input-wrapper form">
+        <input type="text" formControlName="customerName" />
+      </div>
+    </form-field>
+    <form-field>
+      <label>Info</label>
+      <div class="input-wrapper">
+        <textarea
+          rows="4"
+          formControlName="customerInfo"
+          class="text-area"
+        ></textarea>
+      </div>
+    </form-field>
+    <form-field>
+      <label>Email</label>
+      <div class="input-wrapper">
+        <input type="email" formControlName="customerEmail" />
+      </div>
+    </form-field>
+    <form-field>
+      <label>Phone Number</label>
+      <div class="input-wrapper">
+        <input type="tel" formControlName="customerPhone" />
+      </div>
+    </form-field>
+  </form-group>
+  <ion-row *ngIf="customer">
+    <ion-col size="12" size-md="6">
+      <div class="row-wrapper">
+        <div class="attribute"><b>Created By</b></div>
+        <div class="spacer">:</div>
+        {{ customer.createdBy ? customer.createdBy : "-" }}
+      </div>
+      <div class="row-wrapper">
+        <div class="attribute"><b>Created Date</b></div>
+        <div class="spacer">:</div>
+        {{
+          customer.createdDate
+            ? (customer.createdDate | date : "dd MMMM yyyy, HH:mm")
+            : "-"
+        }}
+        <br />
+      </div>
+    </ion-col>
+    <ion-col *ngIf="!customer.isArchived" size="12" size-md="6">
+      <div class="row-wrapper">
+        <div class="attribute"><b>Updated By</b></div>
+        <div class="spacer">:</div>
+        {{ customer.updatedBy ? customer.updatedBy : "-" }}
+      </div>
+      <div class="row-wrapper">
+        <div class="attribute"><b>Updated Date</b></div>
+        <div class="spacer">:</div>
+        {{
+          customer.updatedDate
+            ? (customer.updatedDate | date : "dd MMMM yyyy, HH:mm")
+            : "-"
+        }}
+        <br />
+      </div>
+    </ion-col>
+    <ion-col *ngIf="customer.isArchived" size="12" size-md="6">
+      <div class="row-wrapper">
+        <div class="attribute"><b>Archived By</b></div>
+        <div class="spacer">:</div>
+        {{ customer.archivedBy ? customer.archivedBy : "-" }}
+      </div>
+      <div class="row-wrapper">
+        <div class="attribute"><b>Archived Date</b></div>
+        <div class="spacer">:</div>
+        {{
+          customer.archivedDate
+            ? (customer.archivedDate | date : "dd MMMM yyyy, HH:mm")
+            : "-"
+        }}
+        <br />
+      </div>
+    </ion-col>
+    <ion-col size="12" size-md="6">
+      <div class="row-wrapper">
+        <div class="attribute"><b>Last Backup Date</b></div>
+        <div class="spacer">:</div>
+        {{
+          customer.lastBackupDate
+            ? (customer.lastBackupDate | date : "dd MMMM yyyy, HH:mm")
+            : "-"
+        }}
+      </div>
+    </ion-col>
+  </ion-row>
+
+  <div class="button-wrapper">
+    <ion-button color="danger" (click)="cancel()"> Cancel</ion-button>
+    <ion-button
+      class="green"
+      (click)="makeCustomer()"
+      [disabled]="!form.dirty || !form.valid"
+    >
+      Confirm</ion-button
+    >
+  </div>
+</modal-component>
